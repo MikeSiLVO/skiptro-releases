@@ -92,13 +92,15 @@ skiptro-cli lookup "/path/to/episode.mkv"
 
 ### Chapter Files
 
-The `export-chapters` command writes `.skiptro.chapters` files in ffmpeg metadata format next to each video. These can be remuxed into your video files to add chapter markers:
+The `export-chapters` command writes `.skiptro.chapters` files in ffmpeg metadata format next to each video. If the video already has chapters, they are preserved and merged with the intro chapter.
+
+These can be remuxed into your video files to add chapter markers:
 
 ```bash
-ffmpeg -i episode.mkv -i episode.skiptro.chapters -map_metadata 1 -codec copy output.mkv
+ffmpeg -i episode.mkv -i episode.skiptro.chapters -map 0 -map_chapters 1 -codec copy output.mkv
 ```
 
-This creates three chapters: pre-intro, intro, and episode — allowing you to skip the intro using chapter navigation.
+No re-encoding is performed — only the container metadata is updated.
 
 ### Scheduled Scanning
 
