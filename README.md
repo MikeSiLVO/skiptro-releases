@@ -17,7 +17,10 @@ Each release includes both a **Desktop GUI app** and a **CLI** for automation.
 
 - Detects intros by comparing audio across episodes in a season
 - Exports `.skiptro.json` files for the companion Kodi add-on
+- EDL export for Kodi's built-in auto-skip
 - Optional ffmpeg chapter file export for users who prefer to embed chapters
+- Per-show exclusion for skipping specific shows
+- Docker support for headless/NAS deployments
 - Self-contained — no runtime or dependencies required
 - Needs at least 2 episodes per season to work
 
@@ -80,11 +83,24 @@ skiptro-cli scan --all --export
 # Scan all and export both skip files and chapter files
 skiptro-cli scan --all --export --chapters
 
+# Scan all and export EDL files for Kodi auto-skip
+skiptro-cli scan --all --export --edl
+
 # Export .skiptro.json files from existing scan results
 skiptro-cli export
 
 # Export ffmpeg chapter files (.skiptro.chapters)
 skiptro-cli export-chapters
+
+# Export Kodi EDL files (.edl)
+skiptro-cli export-edl
+
+# Manage libraries
+skiptro-cli library add "/path/to/TV Shows"
+skiptro-cli libraries
+
+# Exclude a show from scanning
+skiptro-cli show exclude 1 "Show Name"
 
 # Check what's been detected for a specific file
 skiptro-cli lookup "/path/to/episode.mkv"
@@ -124,8 +140,15 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `scan-files <files...>` | Scan specific episode files (min 2) |
 | `export [path]` | Export .skiptro.json files for Kodi |
 | `export-chapters [path]` | Export ffmpeg chapter files (.skiptro.chapters) |
+| `export-edl [path]` | Export Kodi EDL files for auto-skip (.edl) |
 | `status` | Show scan statistics |
 | `libraries` | List configured media libraries |
+| `library add <path>` | Add a media library |
+| `library remove <id>` | Remove a library and its data |
+| `library enable/disable <id>` | Enable or disable a library |
+| `show list <id>` | List shows in a library |
+| `show exclude <id> <name>` | Exclude a show from scanning |
+| `show include <id> <name>` | Re-include an excluded show |
 | `lookup <file>` | Show detected segments for a file |
 
 ### CLI Options
@@ -135,8 +158,34 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `--force` | Force rescan everything (ignore cached results) |
 | `--export` | Export after scan completes (use with `scan --all`) |
 | `--chapters` | Also export ffmpeg chapter files (use with `--export`) |
+| `--edl` | Also export Kodi EDL files (use with `--export`) |
 | `--dry-run` | Scan without writing to database |
 | `--rescan-no-intro` | Rescan seasons previously marked as having no intro |
+
+## Docker
+
+A Docker image is available for headless/NAS deployments (Unraid, Synology, etc.).
+
+```bash
+docker run -d \
+  --name skiptro \
+  -v skiptro-data:/app/data \
+  -v /path/to/tv:/media/tv:ro \
+  -e SCAN_SCHEDULE="0 3 * * *" \
+  mikesilvo/skiptro:latest
+```
+
+By default, the container runs a cron job to scan all configured libraries on schedule. You can also run one-shot commands:
+
+```bash
+# Add a library
+docker exec skiptro /app/skiptro-cli library add /media/tv
+
+# Manual scan
+docker exec skiptro /app/skiptro-cli scan --all --export
+```
+
+See `docker/docker-compose.yml` for a full example.
 
 ## Windows Performance
 
