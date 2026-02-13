@@ -42,21 +42,22 @@ All releases include FFmpeg 8.0 bundled — no additional dependencies required.
 2. Extract to a directory of your choice
 3. **macOS**: You may need to remove the quarantine flag:
    ```
-   xattr -rd com.apple.quarantine Skiptro skiptro-cli
+   xattr -rd com.apple.quarantine Skiptro-Desktop skiptro
    ```
 
 ## What's Included
 
 | File | Description |
 |------|-------------|
-| `Skiptro` / `Skiptro.exe` | Desktop GUI app — configure libraries, scan, and view results |
-| `skiptro-cli` / `skiptro-cli.exe` | Command-line tool — for automation and scheduled tasks |
+| `Skiptro-Desktop` / `Skiptro-Desktop.exe` | Desktop GUI app — configure libraries, scan, and view results |
+| `skiptro` / `skiptro.exe` | Command-line tool — for automation and scheduled tasks |
 | `ffmpeg/` | Bundled FFmpeg 8.0 |
 | `intro_encoder.onnx` | ML model for intro verification |
+| `intro_encoder.onnx.data` | ML model weights data |
 
 ## Desktop App
 
-Launch `Skiptro` to open the GUI. From the desktop app you can:
+Launch `Skiptro-Desktop` to open the GUI. From the desktop app you can:
 
 - Add and manage media libraries
 - Scan libraries for intros
@@ -69,41 +70,41 @@ The CLI is ideal for automation, scheduled tasks, and headless servers.
 
 ```bash
 # Scan a single season
-skiptro-cli scan "/path/to/TV Show/Season 1"
+skiptro scan "/path/to/TV Show/Season 1"
 
 # Force rescan (ignore cached results)
-skiptro-cli scan "/path/to/TV Show/Season 1" --force
+skiptro scan "/path/to/TV Show/Season 1" --force
 
 # Scan all configured libraries
-skiptro-cli scan --all
+skiptro scan --all
 
 # Scan all libraries and export skip files for Kodi
-skiptro-cli scan --all --export
+skiptro scan --all --export
 
 # Scan all and export both skip files and chapter files
-skiptro-cli scan --all --export --chapters
+skiptro scan --all --export --chapters
 
 # Scan all and export EDL files for Kodi auto-skip
-skiptro-cli scan --all --export --edl
+skiptro scan --all --export --edl
 
 # Export .skiptro.json files from existing scan results
-skiptro-cli export
+skiptro export
 
 # Export ffmpeg chapter files (.skiptro.chapters)
-skiptro-cli export-chapters
+skiptro export-chapters
 
 # Export Kodi EDL files (.edl)
-skiptro-cli export-edl
+skiptro export-edl
 
 # Manage libraries
-skiptro-cli library add "/path/to/TV Shows"
-skiptro-cli libraries
+skiptro library add "/path/to/TV Shows"
+skiptro libraries
 
 # Exclude a show from scanning
-skiptro-cli show exclude 1 "Show Name"
+skiptro show exclude 1 "Show Name"
 
 # Check what's been detected for a specific file
-skiptro-cli lookup "/path/to/episode.mkv"
+skiptro lookup "/path/to/episode.mkv"
 ```
 
 ### Chapter Files
@@ -124,11 +125,11 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 
 ```bash
 # Cron (Linux/macOS) — scan and export nightly at 3am
-0 3 * * * /path/to/skiptro-cli scan --all --export
+0 3 * * * /path/to/skiptro scan --all --export
 ```
 
 ```
-# Windows Task Scheduler — run skiptro-cli.exe scan --all --export
+# Windows Task Scheduler — run skiptro.exe scan --all --export
 ```
 
 ### CLI Commands
@@ -179,10 +180,10 @@ By default, the container runs a cron job to scan all configured libraries on sc
 
 ```bash
 # Add a library
-docker exec skiptro /app/skiptro-cli library add /media/tv
+docker exec skiptro /app/skiptro library add /media/tv
 
 # Manual scan
-docker exec skiptro /app/skiptro-cli scan --all --export
+docker exec skiptro /app/skiptro scan --all --export
 ```
 
 See `docker/docker-compose.yml` for a full example.
