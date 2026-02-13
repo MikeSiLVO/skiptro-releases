@@ -4,6 +4,8 @@
     Automatic TV show intro detection for Kodi
     <br />
     <a href="https://github.com/MikeSiLVO/skiptro-releases/releases/latest"><strong>Download Latest Release</strong></a>
+    <br /><br />
+    If you find Skiptro useful, <a href="https://ko-fi.com/mikesilvo">buy me a coffee</a> ☕
   </p>
 </p>
 
