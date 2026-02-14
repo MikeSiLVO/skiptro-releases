@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>skiptro</Name>
+  <Repository>mikesilvo/skiptro:latest</Repository>
+  <Registry>https://hub.docker.com/r/mikesilvo/skiptro/</Registry>
+  <Network>bridge</Network>
+  <Privileged>false</Privileged>
+  <Shell>bash</Shell>
+  <Support>https://forum.kodi.tv/showthread.php?tid=381498</Support>
+  <Project>https://github.com/MikeSiLVO/skiptro</Project>
+  <Overview>Automatic TV show intro and credits detection using audio fingerprinting. Scans your media library and generates skip markers that Kodi (via service.skiptro) can use to auto-skip intros during playback.</Overview>
+  <Category>MediaApp:Video Tools:</Category>
+  <TemplateURL>https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/unraid/skiptro.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/unraid/skiptro-icon.png</Icon>
+  <Beta>true</Beta>
+  <DonateText>Buy me a coffee</DonateText>
+  <DonateLink>https://ko-fi.com/mikesilvo</DonateLink>
+  <!-- Changes section auto-generated from CHANGELOG.md during release -->
+  <Changes>
+[center][b]Skiptro Change Log[/b][/center]
+
+[b]v0.10.1[/b]
+- Fix outlier correction moving late intros to wrong positions (Daredevil S01)
+- Fix database migration crash when upgrading from pre-WatchForChanges schema
+- Add Unraid Docker template with GUI-configurable settings
+- Auto-sync Unraid template changelog and icon during release
+- Gate verify command behind dev mode
+
+[b]v0.10.0[/b]
+
+[u]Breaking Changes[/u]
+- Rename CLI from `skiptro-cli` to `skiptro` for simpler PATH usage
+- Rename Desktop from `Skiptro` to `Skiptro-Desktop` to avoid name conflict
+- CLI and Desktop now share the same database (was using different paths).
+  If you used the CLI standalone in 0.9.0, your old database at
+  `%LOCALAPPDATA%\Skiptro\skiptro.db` will be automatically migrated on first
+  run — unless a Desktop database already exists at `%APPDATA%\Skiptro\skiptro.db`,
+  in which case the CLI will warn and keep both. Merge manually if needed.
+- Users upgrading from 0.9.0 will have shortcuts automatically migrated
+
+[u]Changes[/u]
+- Sync JSON export format between CLI and Desktop (indented, conditional end field)
+- Filter CLI export to intro segments only (credits not yet implemented)
+- Prompt before deleting exported sidecar files when removing a library
+- Library IDs now reuse gaps after deletion instead of always incrementing
+- Add single-instance guard to prevent multiple Desktop windows
+- Fix Velopack shortcut creation to point to correct exe after rename
+- Docker entrypoint updated for new CLI binary name
+
+[b]v0.9.0[/b]
+- Add library management CLI (`library add/remove/enable/disable`)
+- Add per-show exclusion (`show exclude/include`)
+- Add EDL export for Kodi auto-skip (`export-edl` command, `--edl` flag)
+- Add Docker support with bundled FFmpeg and ML model
+- Add cross-season intro detection for single-episode seasons
+- Add diagnostic logging for debugging scan issues
+- Extend snap distance for high-quality silences
+- Clean up sidecar files when deleting library data
+- Fix potential FFmpeg stderr pipe deadlock
+- Fix Desktop resource leaks (DB connections and event handlers)
+- Remove duplicate video extension list
+- Remove unused BatchAllTripletLoss from ML training
+  </Changes>
+
+  <Config Name="Appdata" Target="/root/.local/share/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
+    Description="Persistent data: scan results, library config, and database." Type="Path" Display="always" Required="true" Mask="false"/>
+
+  <Config Name="Media" Target="/media/tv" Default="/mnt/user/TV Shows" Mode="ro"
+    Description="Path to your TV show library. Add more paths below if your media is spread across multiple shares." Type="Path" Display="always" Required="true" Mask="false"/>
+
+  <Config Name="Scan Schedule" Target="SCAN_SCHEDULE" Default="0 3 * * *"
+    Description="Cron schedule for automatic scans (default: 3 AM daily)." Type="Variable" Display="always" Required="false" Mask="false"/>
+
+  <Config Name="Scan Arguments" Target="SCAN_ARGS" Default="--all --export"
+    Description="CLI arguments for scheduled scans." Type="Variable" Display="advanced" Required="false" Mask="false"/>
+</Container>
