@@ -19,6 +19,10 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.10.2[/b]
+- Auto-register media libraries on container startup via MEDIA_PATHS env var
+- Add MEDIA_PATHS config to Unraid template for GUI-only setup
+
 [b]v0.10.1[/b]
 - Fix outlier correction moving late intros to wrong positions (Daredevil S01)
 - Fix database migration crash when upgrading from pre-WatchForChanges schema
@@ -46,20 +50,6 @@
 - Add single-instance guard to prevent multiple Desktop windows
 - Fix Velopack shortcut creation to point to correct exe after rename
 - Docker entrypoint updated for new CLI binary name
-
-[b]v0.9.0[/b]
-- Add library management CLI (`library add/remove/enable/disable`)
-- Add per-show exclusion (`show exclude/include`)
-- Add EDL export for Kodi auto-skip (`export-edl` command, `--edl` flag)
-- Add Docker support with bundled FFmpeg and ML model
-- Add cross-season intro detection for single-episode seasons
-- Add diagnostic logging for debugging scan issues
-- Extend snap distance for high-quality silences
-- Clean up sidecar files when deleting library data
-- Fix potential FFmpeg stderr pipe deadlock
-- Fix Desktop resource leaks (DB connections and event handlers)
-- Remove duplicate video extension list
-- Remove unused BatchAllTripletLoss from ML training
   </Changes>
 
   <Config Name="Appdata" Target="/root/.local/share/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
@@ -67,6 +57,9 @@
 
   <Config Name="Media" Target="/media/tv" Default="/mnt/user/TV Shows" Mode="ro"
     Description="Path to your TV show library. Add more paths below if your media is spread across multiple shares." Type="Path" Display="always" Required="true" Mask="false"/>
+
+  <Config Name="Media Paths" Target="MEDIA_PATHS" Default="/media/tv"
+    Description="Container paths to register as media libraries (comma-separated). Must match your volume mount targets above. If you add more path mappings, add the container paths here too." Type="Variable" Display="always" Required="true" Mask="false"/>
 
   <Config Name="Scan Schedule" Target="SCAN_SCHEDULE" Default="0 3 * * *"
     Description="Cron schedule for automatic scans (default: 3 AM daily)." Type="Variable" Display="always" Required="false" Mask="false"/>

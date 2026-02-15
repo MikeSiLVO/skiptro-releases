@@ -113,13 +113,15 @@ skiptro lookup "/path/to/episode.mkv"
 
 The `export-chapters` command writes `.skiptro.chapters` files in ffmpeg metadata format next to each video. If the video already has chapters, they are preserved and merged with the intro chapter.
 
-These can be remuxed into your video files to add chapter markers:
+These can be embedded into your video files to add chapter markers:
 
 ```bash
+# MKV files — edits in-place, no remux needed (requires mkvtoolnix)
+mkvpropedit episode.mkv -c episode.skiptro.chapters
+
+# Any format — remuxes into a new file (no re-encoding)
 ffmpeg -i episode.mkv -i episode.skiptro.chapters -map 0 -map_chapters 1 -codec copy output.mkv
 ```
-
-No re-encoding is performed — only the container metadata is updated.
 
 ### Scheduled Scanning
 
@@ -172,18 +174,16 @@ A Docker image is available for headless/NAS deployments (Unraid, Synology, etc.
 ```bash
 docker run -d \
   --name skiptro \
-  -v skiptro-data:/app/data \
+  -v skiptro-data:/root/.local/share/Skiptro \
   -v /path/to/tv:/media/tv:ro \
+  -e MEDIA_PATHS=/media/tv \
   -e SCAN_SCHEDULE="0 3 * * *" \
   mikesilvo/skiptro:latest
 ```
 
-By default, the container runs a cron job to scan all configured libraries on schedule. You can also run one-shot commands:
+Media libraries listed in `MEDIA_PATHS` (comma-separated) are auto-registered on container startup. The container runs a cron job to scan all libraries on schedule. You can also run one-shot commands:
 
 ```bash
-# Add a library
-docker exec skiptro /app/skiptro library add /media/tv
-
 # Manual scan
 docker exec skiptro /app/skiptro scan --all --export
 ```
