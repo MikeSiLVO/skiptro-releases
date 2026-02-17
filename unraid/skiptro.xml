@@ -19,6 +19,10 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.11.2[/b]
+- Switch Docker build to native arm64 runners (~40% faster)
+- Fix release build missing NuGet restore for CLI project
+
 [b]v0.11.1[/b]
 - Optimize build pipeline: NuGet caching, incremental builds, Docker layer ordering
 
@@ -29,10 +33,6 @@
 - Fix Unraid template appdata path (`/root/.config/Skiptro` not `.local/share`)
 - Fix Unraid template media mount mode (rw, not ro — export needs write access)
 - Fix docker-compose appdata path
-
-[b]v0.10.2[/b]
-- Auto-register media libraries on container startup via MEDIA_PATHS env var
-- Add MEDIA_PATHS config to Unraid template for GUI-only setup
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
