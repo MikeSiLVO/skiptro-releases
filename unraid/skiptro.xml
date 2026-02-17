@@ -19,20 +19,16 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.11.3[/b]
+- Prevent concurrent scans — second instance exits immediately with warning
+- Add flock guard in Docker cron as additional protection
+
 [b]v0.11.2[/b]
 - Switch Docker build to native arm64 runners (~40% faster)
 - Fix release build missing NuGet restore for CLI project
 
 [b]v0.11.1[/b]
 - Optimize build pipeline: NuGet caching, incremental builds, Docker layer ordering
-
-[b]v0.11.0[/b]
-- Add `export-themes` command — extracts intro audio as MP3 for tvtunes integration
-- Add `--themes` flag for `scan --all --export --themes`
-- Add `--name` and `--overwrite` options for theme export
-- Fix Unraid template appdata path (`/root/.config/Skiptro` not `.local/share`)
-- Fix Unraid template media mount mode (rw, not ro — export needs write access)
-- Fix docker-compose appdata path
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
