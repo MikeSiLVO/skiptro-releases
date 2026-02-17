@@ -20,6 +20,7 @@ Each release includes both a **Desktop GUI app** and a **CLI** for automation.
 - Detects intros by comparing audio across episodes in a season
 - Exports `.skiptro.json` files for the companion Kodi add-on
 - EDL export for Kodi's built-in auto-skip
+- Theme audio export (MP3) for [tvtunes](https://github.com/latts9923/service.tvtunes) integration
 - Optional ffmpeg chapter file export for users who prefer to embed chapters
 - Per-show exclusion for skipping specific shows
 - Docker support for headless/NAS deployments
@@ -98,6 +99,9 @@ skiptro export-chapters
 # Export Kodi EDL files (.edl)
 skiptro export-edl
 
+# Export intro audio as MP3 for tvtunes (one per season in show folder)
+skiptro export-themes
+
 # Manage libraries
 skiptro library add "/path/to/TV Shows"
 skiptro libraries
@@ -146,6 +150,7 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `export [path]` | Export .skiptro.json files for Kodi |
 | `export-chapters [path]` | Export ffmpeg chapter files (.skiptro.chapters) |
 | `export-edl [path]` | Export Kodi EDL files for auto-skip (.edl) |
+| `export-themes [path]` | Export intro audio as MP3 for tvtunes |
 | `status` | Show scan statistics |
 | `libraries` | List configured media libraries |
 | `library add <path>` | Add a media library |
@@ -164,6 +169,9 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `--export` | Export after scan completes (use with `scan --all`) |
 | `--chapters` | Also export ffmpeg chapter files (use with `--export`) |
 | `--edl` | Also export Kodi EDL files (use with `--export`) |
+| `--themes` | Also export theme MP3s for tvtunes (use with `--export`) |
+| `--name <prefix>` | Theme filename prefix (default: `theme`) |
+| `--overwrite` | Overwrite existing theme files |
 | `--dry-run` | Scan without writing to database |
 | `--rescan-no-intro` | Rescan seasons previously marked as having no intro |
 
@@ -174,8 +182,8 @@ A Docker image is available for headless/NAS deployments (Unraid, Synology, etc.
 ```bash
 docker run -d \
   --name skiptro \
-  -v skiptro-data:/root/.local/share/Skiptro \
-  -v /path/to/tv:/media/tv:ro \
+  -v skiptro-data:/root/.config/Skiptro \
+  -v /path/to/tv:/media/tv \
   -e MEDIA_PATHS=/media/tv \
   -e SCAN_SCHEDULE="0 3 * * *" \
   mikesilvo/skiptro:latest

@@ -19,6 +19,14 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.11.0[/b]
+- Add `export-themes` command — extracts intro audio as MP3 for tvtunes integration
+- Add `--themes` flag for `scan --all --export --themes`
+- Add `--name` and `--overwrite` options for theme export
+- Fix Unraid template appdata path (`/root/.config/Skiptro` not `.local/share`)
+- Fix Unraid template media mount mode (rw, not ro — export needs write access)
+- Fix docker-compose appdata path
+
 [b]v0.10.2[/b]
 - Auto-register media libraries on container startup via MEDIA_PATHS env var
 - Add MEDIA_PATHS config to Unraid template for GUI-only setup
@@ -29,34 +37,13 @@
 - Add Unraid Docker template with GUI-configurable settings
 - Auto-sync Unraid template changelog and icon during release
 - Gate verify command behind dev mode
-
-[b]v0.10.0[/b]
-
-[u]Breaking Changes[/u]
-- Rename CLI from `skiptro-cli` to `skiptro` for simpler PATH usage
-- Rename Desktop from `Skiptro` to `Skiptro-Desktop` to avoid name conflict
-- CLI and Desktop now share the same database (was using different paths).
-  If you used the CLI standalone in 0.9.0, your old database at
-  `%LOCALAPPDATA%\Skiptro\skiptro.db` will be automatically migrated on first
-  run — unless a Desktop database already exists at `%APPDATA%\Skiptro\skiptro.db`,
-  in which case the CLI will warn and keep both. Merge manually if needed.
-- Users upgrading from 0.9.0 will have shortcuts automatically migrated
-
-[u]Changes[/u]
-- Sync JSON export format between CLI and Desktop (indented, conditional end field)
-- Filter CLI export to intro segments only (credits not yet implemented)
-- Prompt before deleting exported sidecar files when removing a library
-- Library IDs now reuse gaps after deletion instead of always incrementing
-- Add single-instance guard to prevent multiple Desktop windows
-- Fix Velopack shortcut creation to point to correct exe after rename
-- Docker entrypoint updated for new CLI binary name
   </Changes>
 
-  <Config Name="Appdata" Target="/root/.local/share/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
+  <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
     Description="Persistent data: scan results, library config, and database." Type="Path" Display="always" Required="true" Mask="false"/>
 
-  <Config Name="Media" Target="/media/tv" Default="/mnt/user/TV Shows" Mode="ro"
-    Description="Path to your TV show library. Add more paths below if your media is spread across multiple shares." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Media" Target="/media/tv" Default="/mnt/user/TV Shows" Mode="rw"
+    Description="Path to your TV show library. Must be read-write so skiptro can write .skiptro.json files alongside episodes. Add more paths below if your media is spread across multiple shares." Type="Path" Display="always" Required="true" Mask="false"/>
 
   <Config Name="Media Paths" Target="MEDIA_PATHS" Default="/media/tv"
     Description="Container paths to register as media libraries (comma-separated). Must match your volume mount targets above. If you add more path mappings, add the container paths here too." Type="Variable" Display="always" Required="true" Mask="false"/>
