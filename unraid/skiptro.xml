@@ -19,6 +19,9 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.11.1[/b]
+- Optimize build pipeline: NuGet caching, incremental builds, Docker layer ordering
+
 [b]v0.11.0[/b]
 - Add `export-themes` command — extracts intro audio as MP3 for tvtunes integration
 - Add `--themes` flag for `scan --all --export --themes`
@@ -30,13 +33,6 @@
 [b]v0.10.2[/b]
 - Auto-register media libraries on container startup via MEDIA_PATHS env var
 - Add MEDIA_PATHS config to Unraid template for GUI-only setup
-
-[b]v0.10.1[/b]
-- Fix outlier correction moving late intros to wrong positions (Daredevil S01)
-- Fix database migration crash when upgrading from pre-WatchForChanges schema
-- Add Unraid Docker template with GUI-configurable settings
-- Auto-sync Unraid template changelog and icon during release
-- Gate verify command behind dev mode
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
