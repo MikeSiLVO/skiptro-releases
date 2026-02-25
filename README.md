@@ -189,14 +189,34 @@ docker run -d \
   mikesilvo/skiptro:latest
 ```
 
+Or with docker-compose:
+
+```yaml
+services:
+  skiptro:
+    image: mikesilvo/skiptro:latest
+    container_name: skiptro
+    environment:
+      - MEDIA_PATHS=/media/tv
+      - SCAN_SCHEDULE=0 3 * * *
+      - SCAN_ARGS=--all --export
+    volumes:
+      - skiptro-data:/root/.config/Skiptro
+      - /path/to/tv:/media/tv
+      # Add more media mounts as needed:
+      # - /path/to/more-tv:/media/tv2
+    restart: unless-stopped
+
+volumes:
+  skiptro-data:
+```
+
 Media libraries listed in `MEDIA_PATHS` (comma-separated) are auto-registered on container startup. The container runs a cron job to scan all libraries on schedule. You can also run one-shot commands:
 
 ```bash
 # Manual scan
 docker exec skiptro /app/skiptro scan --all --export
 ```
-
-See `docker/docker-compose.yml` for a full example.
 
 ## Windows Performance
 
