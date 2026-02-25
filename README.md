@@ -189,7 +189,7 @@ docker run -d \
   mikesilvo/skiptro:latest
 ```
 
-Or with docker-compose:
+### Docker Compose
 
 ```yaml
 services:
