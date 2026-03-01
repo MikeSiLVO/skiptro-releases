@@ -19,6 +19,11 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.12.0[/b]
+- Skip unchanged seasons even if some episodes had no intro detected
+- Template-match new episodes against existing intros instead of full season rescan
+- Fix database error when saving new detections (broken references from earlier upgrade)
+
 [b]v0.11.4[/b]
 - Fix episodes rescanning every run on Linux due to timestamp precision mismatch
 - Support adding multiple folders at once in Desktop GUI
@@ -27,10 +32,6 @@
 [b]v0.11.3[/b]
 - Prevent concurrent scans — second instance exits immediately with warning
 - Add flock guard in Docker cron as additional protection
-
-[b]v0.11.2[/b]
-- Switch Docker build to native arm64 runners (~40% faster)
-- Fix release build missing NuGet restore for CLI project
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
