@@ -19,6 +19,11 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.12.1[/b]
+- Fix intro detection merging unrelated audio (Cyberpunk Edgerunners, Dragon Ball Z)
+- Add `--diagnostics` flag to `scan-files` to output diagnostic reports in JSON format
+- Improved scan logging for easier troubleshooting
+
 [b]v0.12.0[/b]
 - Skip unchanged seasons even if some episodes had no intro detected
 - Template-match new episodes against existing intros instead of full season rescan
@@ -28,10 +33,6 @@
 - Fix episodes rescanning every run on Linux due to timestamp precision mismatch
 - Support adding multiple folders at once in Desktop GUI
 - Group libraries under collapsible headers in Desktop GUI
-
-[b]v0.11.3[/b]
-- Prevent concurrent scans — second instance exits immediately with warning
-- Add flock guard in Docker cron as additional protection
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"

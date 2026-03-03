@@ -174,6 +174,7 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `--overwrite` | Overwrite existing theme files |
 | `--dry-run` | Scan without writing to database |
 | `--rescan-no-intro` | Rescan seasons previously marked as having no intro |
+| `--diagnostics` | Write a JSON diagnostic report to logs (use with `scan-files`) |
 
 ## Docker
 
