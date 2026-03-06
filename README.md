@@ -175,6 +175,7 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `--dry-run` | Scan without writing to database |
 | `--rescan-no-intro` | Rescan seasons previously marked as having no intro |
 | `--diagnostics` | Write a JSON diagnostic report to logs (use with `scan-files`) |
+| `--audio-stream N` | Select audio stream index (0-based) for multi-language files |
 
 ## Docker
 
