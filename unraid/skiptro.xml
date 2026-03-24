@@ -19,6 +19,14 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.13.1[/b]
+- Accept directory paths in `scan-files` (previously required individual file paths)
+- Fix correlation validator rejecting valid intros on shows with narrator-style intros (Everybody Loves Raymond)
+- Fix post-intro sound effects being included in detected intro boundaries (NCIS)
+- Allow mel boundary trimming when fingerprinter overshoots into post-intro content
+- Prefer sustained silences over brief gaps when snapping end boundaries
+- Verify command now runs a live scan instead of reading cached results
+
 [b]v0.13.0[/b]
 - Add mel spectrogram boundary extension for more accurate intro end detection
 - Add `--audio-stream N` flag to select specific audio track for multi-language files
@@ -28,11 +36,6 @@
 - Fix intro detection merging unrelated audio (Cyberpunk Edgerunners, Dragon Ball Z)
 - Add `--diagnostics` flag to `scan-files` to output diagnostic reports in JSON format
 - Improved scan logging for easier troubleshooting
-
-[b]v0.12.0[/b]
-- Skip unchanged seasons even if some episodes had no intro detected
-- Template-match new episodes against existing intros instead of full season rescan
-- Fix database error when saving new detections (broken references from earlier upgrade)
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
