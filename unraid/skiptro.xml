@@ -19,23 +19,23 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.14.0[/b]
+- Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
+- Recover episodes with partial fingerprint matches using mel spectrogram similarity
+- Extend search window from 10 to 15 minutes for shows with late intros
+- Fix post-intro sound effects included in boundaries on shows with sustained silence (NCIS)
+
 [b]v0.13.1[/b]
 - Accept directory paths in `scan-files` (previously required individual file paths)
 - Fix correlation validator rejecting valid intros on shows with narrator-style intros (Everybody Loves Raymond)
 - Fix post-intro sound effects being included in detected intro boundaries (NCIS)
 - Allow mel boundary trimming when fingerprinter overshoots into post-intro content
 - Prefer sustained silences over brief gaps when snapping end boundaries
-- Verify command now runs a live scan instead of reading cached results
 
 [b]v0.13.0[/b]
 - Add mel spectrogram boundary extension for more accurate intro end detection
 - Add `--audio-stream N` flag to select specific audio track for multi-language files
 - Widen boundary snap window for better end-of-intro precision
-
-[b]v0.12.1[/b]
-- Fix intro detection merging unrelated audio (Cyberpunk Edgerunners, Dragon Ball Z)
-- Add `--diagnostics` flag to `scan-files` to output diagnostic reports in JSON format
-- Improved scan logging for easier troubleshooting
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
