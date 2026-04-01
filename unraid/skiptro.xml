@@ -19,6 +19,34 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.15.0[/b]
+
+[u]Desktop GUI[/u]
+- Redesigned Libraries page as "Media" — browse shows and seasons per library with scan/rescan at every level
+- Persistent status bar with expandable log panel visible from any page
+- Custom Scan mode with cascading multi-level selection (group, library, show, season)
+- Dry run mode in Custom Scan — test scans without saving to database, with amber info banner
+- Audio stream detection — inline warning on seasons with multiple audio tracks, stream picker to select track
+- Export format options — JSON, chapters, EDL, and theme MP3 export
+- Theme export options — configurable filename prefix and overwrite toggle
+- Collapsible groups with nested modular templates
+- Merged Stats and Intros pages — searchable per-show breakdown with episode-level DataGrid
+- Removed redundant Scan page
+- Window size and position persisted across sessions
+- Removed user-facing detection tuning (calibrated defaults used automatically)
+- Reset database option in Settings with double confirmation
+
+[u]CLI[/u]
+- New `streams` command to list and manage multi-track audio seasons
+- Audio stream override per season (`streams set/clear`)
+- Multi-track detection notice after scan completion
+
+[u]Detection[/u]
+- Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
+- Recover episodes with partial fingerprint matches using mel spectrogram similarity
+- Extend search window from 10 to 15 minutes for shows with late intros
+- Fix post-intro sound effects included in boundaries on shows with sustained silence (NCIS)
+
 [b]v0.14.0[/b]
 - Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
 - Recover episodes with partial fingerprint matches using mel spectrogram similarity
@@ -31,11 +59,6 @@
 - Fix post-intro sound effects being included in detected intro boundaries (NCIS)
 - Allow mel boundary trimming when fingerprinter overshoots into post-intro content
 - Prefer sustained silences over brief gaps when snapping end boundaries
-
-[b]v0.13.0[/b]
-- Add mel spectrogram boundary extension for more accurate intro end detection
-- Add `--audio-stream N` flag to select specific audio track for multi-language files
-- Widen boundary snap window for better end-of-intro precision
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
