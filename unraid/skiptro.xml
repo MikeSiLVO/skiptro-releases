@@ -19,18 +19,29 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.15.1[/b]
+
+[u]Desktop GUI[/u]
+- Fix UI freezing during long scans. Throttled progress updates, async DB queries
+- Scanned shows with no intros now show "No intros found" instead of "Not scanned"
+- Rescan button shown for previously scanned shows
+
+[u]Detection[/u]
+- Detect intros on shows where fewer than 50% of episodes fingerprint-match (Everybody Loves Raymond)
+- Drop false positives from template fallback when duration doesn't match the cluster
+
 [b]v0.15.0[/b]
 
 [u]Desktop GUI[/u]
-- Redesigned Libraries page as "Media" — browse shows and seasons per library with scan/rescan at every level
+- Redesigned Libraries page as "Media". Browse shows and seasons per library with scan/rescan at every level
 - Persistent status bar with expandable log panel visible from any page
 - Custom Scan mode with cascading multi-level selection (group, library, show, season)
-- Dry run mode in Custom Scan — test scans without saving to database, with amber info banner
-- Audio stream detection — inline warning on seasons with multiple audio tracks, stream picker to select track
-- Export format options — JSON, chapters, EDL, and theme MP3 export
-- Theme export options — configurable filename prefix and overwrite toggle
+- Dry run mode in Custom Scan. Test scans without saving to database, with amber info banner
+- Audio stream detection. Inline warning on seasons with multiple audio tracks, stream picker to select track
+- Export format options: JSON, chapters, EDL, and theme MP3
+- Theme export options: configurable filename prefix and overwrite toggle
 - Collapsible groups with nested modular templates
-- Merged Stats and Intros pages — searchable per-show breakdown with episode-level DataGrid
+- Merged Stats and Intros pages. Searchable per-show breakdown with episode-level DataGrid
 - Removed redundant Scan page
 - Window size and position persisted across sessions
 - Removed user-facing detection tuning (calibrated defaults used automatically)
@@ -52,13 +63,6 @@
 - Recover episodes with partial fingerprint matches using mel spectrogram similarity
 - Extend search window from 10 to 15 minutes for shows with late intros
 - Fix post-intro sound effects included in boundaries on shows with sustained silence (NCIS)
-
-[b]v0.13.1[/b]
-- Accept directory paths in `scan-files` (previously required individual file paths)
-- Fix correlation validator rejecting valid intros on shows with narrator-style intros (Everybody Loves Raymond)
-- Fix post-intro sound effects being included in detected intro boundaries (NCIS)
-- Allow mel boundary trimming when fingerprinter overshoots into post-intro content
-- Prefer sustained silences over brief gaps when snapping end boundaries
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
