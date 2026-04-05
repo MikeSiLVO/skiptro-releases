@@ -19,6 +19,20 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.16.0[/b]
+
+[u]Desktop[/u]
+- Redesigned Export page. Browse and select shows/seasons to export, same as Media page
+- Custom Export and Export All in status bar
+- Export format settings moved to Settings page and saved between sessions
+- Export status pills on each season and show (e.g. "JSON ✓", "EDL 5/7")
+- Status bar now shows contextual buttons per page
+- Library structure cached for faster show/season counts in Custom Scan
+- Drive verification on checkbox click with loading spinner
+- Fixed UI freezing and memory pressure during long scans
+- Removed Dry Run from Desktop (still available in CLI)
+- Crash logging to logs/crash.log
+
 [b]v0.15.1[/b]
 
 [u]Desktop GUI[/u]
@@ -53,12 +67,6 @@
 - Multi-track detection notice after scan completion
 
 [u]Detection[/u]
-- Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
-- Recover episodes with partial fingerprint matches using mel spectrogram similarity
-- Extend search window from 10 to 15 minutes for shows with late intros
-- Fix post-intro sound effects included in boundaries on shows with sustained silence (NCIS)
-
-[b]v0.14.0[/b]
 - Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
 - Recover episodes with partial fingerprint matches using mel spectrogram similarity
 - Extend search window from 10 to 15 minutes for shows with late intros
