@@ -19,6 +19,9 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.16.1[/b]
+- Fix scan aborting after first show due to .NET 10 GC parameter change
+
 [b]v0.16.0[/b]
 
 [u]Desktop[/u]
@@ -43,34 +46,6 @@
 [u]Detection[/u]
 - Detect intros on shows where fewer than 50% of episodes fingerprint-match (Everybody Loves Raymond)
 - Drop false positives from template fallback when duration doesn't match the cluster
-
-[b]v0.15.0[/b]
-
-[u]Desktop GUI[/u]
-- Redesigned Libraries page as "Media". Browse shows and seasons per library with scan/rescan at every level
-- Persistent status bar with expandable log panel visible from any page
-- Custom Scan mode with cascading multi-level selection (group, library, show, season)
-- Dry run mode in Custom Scan. Test scans without saving to database, with amber info banner
-- Audio stream detection. Inline warning on seasons with multiple audio tracks, stream picker to select track
-- Export format options: JSON, chapters, EDL, and theme MP3
-- Theme export options: configurable filename prefix and overwrite toggle
-- Collapsible groups with nested modular templates
-- Merged Stats and Intros pages. Searchable per-show breakdown with episode-level DataGrid
-- Removed redundant Scan page
-- Window size and position persisted across sessions
-- Removed user-facing detection tuning (calibrated defaults used automatically)
-- Reset database option in Settings with double confirmation
-
-[u]CLI[/u]
-- New `streams` command to list and manage multi-track audio seasons
-- Audio stream override per season (`streams set/clear`)
-- Multi-track detection notice after scan completion
-
-[u]Detection[/u]
-- Deprioritize studio bumpers when a longer actual intro exists (Star Trek Starfleet Academy)
-- Recover episodes with partial fingerprint matches using mel spectrogram similarity
-- Extend search window from 10 to 15 minutes for shows with late intros
-- Fix post-intro sound effects included in boundaries on shows with sustained silence (NCIS)
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
