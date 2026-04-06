@@ -19,6 +19,24 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.17.0[/b]
+
+[u]Desktop[/u]
+- Live scan updates: intro counts and season data update as each season completes
+- Scanning indicators: spinner on active show, accent bar on library/group being scanned
+- Scan/rescan buttons hidden during scan, checkmark shown on scanned items
+- Status bar shows group and library name during scan
+- Page state (scroll position, expanded shows) preserved when switching pages
+- Expanded groups, libraries, and shows restored on restart
+- Window state moved to database (single source of truth for all settings)
+- Collapse rails on nested lists for quick navigation
+- Stats page redesign: drill-down by show, season, and episode
+- Faster scan cancellation
+- Copyright and third-party license info in Settings > About
+- Window position fix on first launch
+- Updated FluentAvalonia 2.5.1, Avalonia 11.3.12
+- Removed unused FFmpeg.AutoGen dependency
+
 [b]v0.16.1[/b]
 - Fix scan aborting after first show due to .NET 10 GC parameter change
 
@@ -35,17 +53,6 @@
 - Fixed UI freezing and memory pressure during long scans
 - Removed Dry Run from Desktop (still available in CLI)
 - Crash logging to logs/crash.log
-
-[b]v0.15.1[/b]
-
-[u]Desktop GUI[/u]
-- Fix UI freezing during long scans. Throttled progress updates, async DB queries
-- Scanned shows with no intros now show "No intros found" instead of "Not scanned"
-- Rescan button shown for previously scanned shows
-
-[u]Detection[/u]
-- Detect intros on shows where fewer than 50% of episodes fingerprint-match (Everybody Loves Raymond)
-- Drop false positives from template fallback when duration doesn't match the cluster
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
