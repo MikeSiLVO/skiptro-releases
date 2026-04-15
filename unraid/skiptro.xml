@@ -19,6 +19,14 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.17.1[/b]
+
+[u]Detection[/u]
+- Hardcode detection params. Fixes stale search window from pre-0.17 installs affecting cross-season detection.
+
+[u]Fixes[/u]
+- Fix scan crash on non-en-US locales (e.g. de-DE) where fractional seconds formatted as `0,74` instead of `0.74`, causing FFmpeg to abort with "Invalid duration for option ss".
+
 [b]v0.17.0[/b]
 
 [u]Desktop[/u]
@@ -39,20 +47,6 @@
 
 [b]v0.16.1[/b]
 - Fix scan aborting after first show due to .NET 10 GC parameter change
-
-[b]v0.16.0[/b]
-
-[u]Desktop[/u]
-- Redesigned Export page. Browse and select shows/seasons to export, same as Media page
-- Custom Export and Export All in status bar
-- Export format settings moved to Settings page and saved between sessions
-- Export status pills on each season and show (e.g. "JSON ✓", "EDL 5/7")
-- Status bar now shows contextual buttons per page
-- Library structure cached for faster show/season counts in Custom Scan
-- Drive verification on checkbox click with loading spinner
-- Fixed UI freezing and memory pressure during long scans
-- Removed Dry Run from Desktop (still available in CLI)
-- Crash logging to logs/crash.log
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
