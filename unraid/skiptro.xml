@@ -19,6 +19,21 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.18.0[/b]
+
+[u]Library[/u]
+- **Drive-root and nested-folder support**: adding `D:\` or any folder with category subfolders (e.g. `Media/TV/<show>`) now finds shows up to four levels deep. Skips system/hidden folders. Forum request from lynxstrike.
+- **Search shows**: type in the new search box on the Media page to flatten the tree into a list of matching shows with library breadcrumbs. Cards expand to show seasons just like in the tree.
+- **Library card redesign**: each card now shows path, scan progress (%, scanned/total seasons), intro count, and a details line covering partial seasons or seasons without intros. Replaces the old timestamp line.
+
+[u]Export[/u]
+- **Verify Files**: new button in the Export status bar checks sidecar files (`.skiptro.json`, `.skiptro.chapters`, `.edl`, theme MP3s) on disk and updates the export pills to match. Cancelable mid-run.
+- **Cancel Export**: red Cancel button replaces the status bar buttons during an export, matching the scan page.
+- **Refresh after custom scan**: per-season scans now update the Export tree immediately. Previously only full library scans triggered a refresh, leaving newly scanned content invisible until restart.
+
+[u]Settings[/u]
+- **Reset Database with backup and restart**: pressing Delete Database moves the current database to a single backup (`skiptro.db.backup`), restarts the app automatically, and offers a Restore Backup button. Fixes silent failure where the file delete was blocked by SQLite being in-use.
+
 [b]v0.17.1[/b]
 
 [u]Detection[/u]
@@ -44,9 +59,6 @@
 - Window position fix on first launch
 - Updated FluentAvalonia 2.5.1, Avalonia 11.3.12
 - Removed unused FFmpeg.AutoGen dependency
-
-[b]v0.16.1[/b]
-- Fix scan aborting after first show due to .NET 10 GC parameter change
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
