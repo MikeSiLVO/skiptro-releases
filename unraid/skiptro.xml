@@ -19,6 +19,16 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.19.0[/b]
+> **Upgrade note**: re-export your libraries after upgrading. Auto-import (below) only picks up sidecars written by 0.19.0+; older `.skiptro.json` files lack the metadata block and will be skipped.
+
+[u]Library[/u]
+- **Sidecar auto-import on scan**: when scanning, existing `.skiptro.json` sidecars next to video files are imported into the database instead of re-detecting. Fingerprinting only runs on episodes without a sidecar. Force Rescan still re-detects everything from scratch. Solves the "moved drives, re-added library, lost all my scans" pain. Requires sidecars written by 0.19.0+. Re-export once after upgrading to migrate older files.
+- **Verify Library**: new `Verify` button on each library card and `Verify All` in the status bar. Walks the database for entries pointing at files/seasons/shows that no longer exist on disk, prompts before removal, lists what would be deleted. Libraries on unreachable drives are skipped automatically.
+
+[u]Export[/u]
+- **Sidecar schema update**: exported `.skiptro.json` now includes a `skiptro` block with `confidence` and `version` alongside the existing `intro` block. Kodi addon ignores unknown keys, so existing consumers keep working. Re-export your libraries once after upgrading: the new schema is required for auto-import to pick up existing sidecars on a future re-add or drive shuffle.
+
 [b]v0.18.0[/b]
 
 [u]Library[/u]
@@ -41,24 +51,6 @@
 
 [u]Fixes[/u]
 - Fix scan crash on non-en-US locales (e.g. de-DE) where fractional seconds formatted as `0,74` instead of `0.74`, causing FFmpeg to abort with "Invalid duration for option ss".
-
-[b]v0.17.0[/b]
-
-[u]Desktop[/u]
-- Live scan updates: intro counts and season data update as each season completes
-- Scanning indicators: spinner on active show, accent bar on library/group being scanned
-- Scan/rescan buttons hidden during scan, checkmark shown on scanned items
-- Status bar shows group and library name during scan
-- Page state (scroll position, expanded shows) preserved when switching pages
-- Expanded groups, libraries, and shows restored on restart
-- Window state moved to database (single source of truth for all settings)
-- Collapse rails on nested lists for quick navigation
-- Stats page redesign: drill-down by show, season, and episode
-- Faster scan cancellation
-- Copyright and third-party license info in Settings > About
-- Window position fix on first launch
-- Updated FluentAvalonia 2.5.1, Avalonia 11.3.12
-- Removed unused FFmpeg.AutoGen dependency
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
