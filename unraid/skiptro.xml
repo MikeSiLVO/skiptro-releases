@@ -19,6 +19,14 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.20.0[/b]
+
+[u]Library[/u]
+- **`.skiptro.ignore` marker**: drop an empty `.skiptro.ignore` file in a library, show, or season folder to skip it on scan. Survives library delete and re-add. Manual only for now.
+
+[u]Detection[/u]
+- **Mel correlation fallback**: recovers episodes that SFP misses due to audio mastering differences. Gated to high-confidence clusters to avoid false positives on genuine no-intro episodes.
+
 [b]v0.19.0[/b]
 > **Upgrade note**: re-export your libraries after upgrading. Auto-import (below) only picks up sidecars written by 0.19.0+; older `.skiptro.json` files lack the metadata block and will be skipped.
 
@@ -43,14 +51,6 @@
 
 [u]Settings[/u]
 - **Reset Database with backup and restart**: pressing Delete Database moves the current database to a single backup (`skiptro.db.backup`), restarts the app automatically, and offers a Restore Backup button. Fixes silent failure where the file delete was blocked by SQLite being in-use.
-
-[b]v0.17.1[/b]
-
-[u]Detection[/u]
-- Hardcode detection params. Fixes stale search window from pre-0.17 installs affecting cross-season detection.
-
-[u]Fixes[/u]
-- Fix scan crash on non-en-US locales (e.g. de-DE) where fractional seconds formatted as `0,74` instead of `0.74`, causing FFmpeg to abort with "Invalid duration for option ss".
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
