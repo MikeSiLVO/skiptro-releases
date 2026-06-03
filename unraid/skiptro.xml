@@ -19,6 +19,11 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.20.2[/b]
+
+[u]Detection[/u]
+- **2-episode seasons**: intros are now detected when a season has only two episodes. The cross-match previously required at least 3 episodes to agree, a 2-episode season would always result in "No skippable intro found". Adjusted to cap at season size instead of hardcode to 3. Reported by Hitcher for Rick and Morty S09.
+
 [b]v0.20.1[/b]
 
 [u]Library[/u]
@@ -31,16 +36,6 @@
 
 [u]Detection[/u]
 - **Mel correlation fallback**: recovers episodes that SFP misses due to audio mastering differences. Gated to high-confidence clusters to avoid false positives on genuine no-intro episodes.
-
-[b]v0.19.0[/b]
-> **Upgrade note**: re-export your libraries after upgrading. Auto-import (below) only picks up sidecars written by 0.19.0+; older `.skiptro.json` files lack the metadata block and will be skipped.
-
-[u]Library[/u]
-- **Sidecar auto-import on scan**: when scanning, existing `.skiptro.json` sidecars next to video files are imported into the database instead of re-detecting. Fingerprinting only runs on episodes without a sidecar. Force Rescan still re-detects everything from scratch. Solves the "moved drives, re-added library, lost all my scans" pain. Requires sidecars written by 0.19.0+. Re-export once after upgrading to migrate older files.
-- **Verify Library**: new `Verify` button on each library card and `Verify All` in the status bar. Walks the database for entries pointing at files/seasons/shows that no longer exist on disk, prompts before removal, lists what would be deleted. Libraries on unreachable drives are skipped automatically.
-
-[u]Export[/u]
-- **Sidecar schema update**: exported `.skiptro.json` now includes a `skiptro` block with `confidence` and `version` alongside the existing `intro` block. Kodi addon ignores unknown keys, so existing consumers keep working. Re-export your libraries once after upgrading: the new schema is required for auto-import to pick up existing sidecars on a future re-add or drive shuffle.
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
