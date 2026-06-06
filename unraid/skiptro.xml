@@ -19,6 +19,11 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v0.20.3[/b]
+
+[u]CLI[/u]
+- **`streams` lists mismatched episodes**: when a season has audio tracks on only some episodes, `streams` now lists which episode numbers carry the extra track and warns that a per-season stream override may break detection on the rest. Uniform seasons are unchanged (the count already says all episodes match). Requested by Hitcher.
+
 [b]v0.20.2[/b]
 
 [u]Detection[/u]
@@ -28,14 +33,6 @@
 
 [u]Library[/u]
 - **Mapped and UNC drive roots**: folder picker accepts `Z:\`, `\\NAS\share`, and other filesystem roots. Previously rejected with "Cannot use folder" because Avalonia returns a relative URI for paths with no parent directory; fix is to read the local filesystem path directly. Reported by Gothico74 (skiptro-releases#5).
-
-[b]v0.20.0[/b]
-
-[u]Library[/u]
-- **`.skiptro.ignore` marker**: drop an empty `.skiptro.ignore` file in a library, show, or season folder to skip it on scan. Survives library delete and re-add. Manual only for now.
-
-[u]Detection[/u]
-- **Mel correlation fallback**: recovers episodes that SFP misses due to audio mastering differences. Gated to high-confidence clusters to avoid false positives on genuine no-intro episodes.
   </Changes>
 
   <Config Name="Appdata" Target="/root/.config/Skiptro" Default="/mnt/user/appdata/skiptro" Mode="rw"
