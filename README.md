@@ -13,18 +13,20 @@
 
 Skiptro uses audio fingerprinting and machine learning to detect TV show intros across episodes in a season, then exports skip markers that Kodi can use to automatically skip them during playback.
 
-Each release includes both a **Desktop GUI app** and a **CLI** for automation.
+You run Skiptro on your PC or NAS and manage it from a **web UI** in your browser. Each release also includes a **CLI** for automation and a **tray app** that runs the server in the background.
 
 ## Features
 
+- Browser-based UI to manage libraries, scan, match shows to TMDB, and review results
 - Detects intros by comparing audio across episodes in a season
 - Exports `.skiptro.json` files for the companion Kodi add-on
 - EDL export for Kodi's built-in auto-skip
 - Theme audio export (MP3) for [tvtunes](https://github.com/latts9923/service.tvtunes) integration
 - Optional ffmpeg chapter file export for users who prefer to embed chapters
 - Per-show exclusion for skipping specific shows
+- Remote access from a phone or another device, with an optional API key
 - Docker support for headless/NAS deployments
-- Self-contained — no runtime or dependencies required
+- Self-contained, no runtime or dependencies required
 - Needs at least 2 episodes per season to work
 
 ## Supported Platforms
@@ -37,7 +39,7 @@ Each release includes both a **Desktop GUI app** and a **CLI** for automation.
 | macOS | x64 (Intel) | Yes |
 | macOS | ARM64 (Apple Silicon) | Yes |
 
-All releases include FFmpeg 8.0 bundled — no additional dependencies required.
+All releases include FFmpeg 8.0 bundled, no additional dependencies required.
 
 ## Installation
 
@@ -52,20 +54,33 @@ All releases include FFmpeg 8.0 bundled — no additional dependencies required.
 
 | File | Description |
 |------|-------------|
-| `Skiptro-Desktop` / `Skiptro-Desktop.exe` | Desktop GUI app — configure libraries, scan, and view results |
-| `skiptro` / `skiptro.exe` | Command-line tool — for automation and scheduled tasks |
+| `skiptro` / `skiptro.exe` | The Skiptro app: runs the web UI (`skiptro serve`) and the CLI |
+| `Skiptro-Desktop` / `Skiptro-Desktop.exe` | Tray app that runs the server in the background and opens the web UI |
 | `ffmpeg/` | Bundled FFmpeg 8.0 |
 | `intro_encoder.onnx` | ML model for intro verification |
 | `intro_encoder.onnx.data` | ML model weights data |
 
-## Desktop App
+## Web UI
 
-Launch `Skiptro-Desktop` to open the GUI. From the desktop app you can:
+Skiptro is managed from your browser.
 
-- Add and manage media libraries
-- Scan libraries for intros
-- View detection results
-- Export `.skiptro.json` files for Kodi
+```bash
+# Start the server, then open http://localhost:8585
+skiptro serve
+```
+
+On Windows you can instead launch `Skiptro-Desktop.exe`, which runs the server in the tray and opens the web UI for you (with an option to start with Windows).
+
+From the web UI you can:
+
+- Add and manage media libraries with a built-in folder browser
+- Scan libraries and watch jobs run in a live queue
+- Match shows to TMDB for proper titles and posters (optional)
+- Review detected intros per season and export `.skiptro.json` files for Kodi
+- Schedule scans and turn on a file watcher for new episodes
+- Allow remote access and reach Skiptro from a phone or another device
+
+To reach it from another device, turn on remote access in Settings and open `http://<server-ip>:8585`. There is no login by default; set an API key (Settings, or the `SKIPTRO_API_KEY` environment variable) to require one. For access from outside your LAN, use a VPN or an authenticated reverse proxy. A QR code in Settings fills the key in on a phone.
 
 ## CLI Quick Start
 
@@ -179,17 +194,19 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 
 ## Docker
 
-A Docker image is available for headless/NAS deployments (Unraid, Synology, etc.).
+A Docker image is available for headless/NAS deployments (Unraid, Synology, etc.). The container serves the web UI on port 8585.
 
 ```bash
 docker run -d \
   --name skiptro \
+  -p 8585:8585 \
   -v skiptro-data:/root/.config/Skiptro \
   -v /path/to/tv:/media/tv \
   -e MEDIA_PATHS=/media/tv \
-  -e SCAN_SCHEDULE="0 3 * * *" \
   mikesilvo/skiptro:latest
 ```
+
+Then open `http://<host-ip>:8585`. The web UI has no login by default; set `SKIPTRO_API_KEY` to require one, and use a VPN or an authenticated reverse proxy for access from outside your LAN.
 
 ### Docker Compose
 
@@ -198,10 +215,12 @@ services:
   skiptro:
     image: mikesilvo/skiptro:latest
     container_name: skiptro
+    ports:
+      - "8585:8585"
     environment:
       - MEDIA_PATHS=/media/tv
-      - SCAN_SCHEDULE=0 3 * * *
-      - SCAN_ARGS=--all --export
+      # Optional: require this key for access from other devices
+      # - SKIPTRO_API_KEY=choose-a-long-random-string
     volumes:
       - skiptro-data:/root/.config/Skiptro
       - /path/to/tv:/media/tv
@@ -213,12 +232,14 @@ volumes:
   skiptro-data:
 ```
 
-Media libraries listed in `MEDIA_PATHS` (comma-separated) are auto-registered on container startup. The container runs a cron job to scan all libraries on schedule. You can also run one-shot commands:
+Media libraries listed in `MEDIA_PATHS` (comma-separated) are auto-registered on container startup. Configure scheduled scans and the file watcher from the web UI under Settings. You can also run one-shot commands:
 
 ```bash
 # Manual scan
 docker exec skiptro /app/skiptro scan --all --export
 ```
+
+> Upgrading from a 0.x image: the old `SCAN_SCHEDULE` and `SCAN_ARGS` variables no longer do anything. Publish port 8585 to reach the web UI, and set up scheduled scans there.
 
 ## Windows Performance
 
@@ -231,7 +252,7 @@ To fix, run this once in PowerShell as admin:
 Add-MpPreference -ExclusionProcess "C:\path\to\Skiptro\ffmpeg\ffmpeg.exe"
 ```
 
-The Desktop app shows the exact command with the correct path under Settings > Performance.
+The web UI shows the exact command with the correct path under Settings > Performance.
 
 This only excludes file reads made by the bundled FFmpeg binary — your media files are still protected normally.
 
