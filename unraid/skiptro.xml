@@ -20,6 +20,37 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.1.0[/b]
+A reworked Shows toolbar, Custom dialog, and Stats page, smarter TMDB matching that clears most ambiguous shows on its own and now logs each run to Activity, plus mobile scrolling and safety fixes.
+
+[u]Web UI[/u]
+- **Toolbar redesign**: filter, a Grid/List toggle, sort-by (Title, Date added, Recently scanned), the library picker, and the Scan / Custom / Validate / Match actions sit in one consistent order. Phones fold it into two compact rows and the action buttons size to their labels.
+- **Custom scan/export redesign**: a Scan/Export mode toggle shows only the options that apply, and the show picker is a collapsible per-library tree with a tri-state checkbox (none, partial, all), a selected/total count, a filter, and All/Clear. The toggle and action button stay pinned while the tree scrolls. Larger touch targets on phones.
+- **Confirm whole-library actions**: Scan all, Validate exports, and Verify libraries ask first, since each crawls every library and wakes idle drives. A scoped single-library scan or export still runs immediately.
+- **Rename libraries**: rename a library inline on the Libraries page, or with `library rename <id> <name>` on the CLI. Display-only. The folder and detections are untouched.
+- **Unified jobs bar**: one bottom bar lists all running work (scans, queued exports, and matching together), each with a Cancel. It replaces the top-right Jobs button; Activity stays the full history.
+- **Stats page**: the summary tightens to a clean 2x2 of cards on phones (Intros found, Libraries, Avg confidence, Exported), and the filter gets its own row with a live "shows with scan data" count. A duplicate card was dropped.
+- **Support link**: a muted Ko-fi "Support" link with a small heart in the top bar, hideable from Settings.
+
+[u]Matching[/u]
+- **Fewer manual picks**: most shows that used to need one now match on their own. Matching checks name and year, then season and episode counts, then episode-title overlap, leaving only the genuinely unclear ones for you.
+- **Re-match unresolved**: re-runs matching over just the ambiguous and unmatched shows; whatever stays ambiguous opens in an auto-advancing review picker.
+- **Match runs in Activity**: a completed Match all or Re-match is recorded in the Activity history with its result counts (matched, ambiguous, unmatched).
+
+[u]CLI and Docker[/u]
+- **`cleanup` command**: removes detection records for episodes whose files are gone, without touching anything still on disk.
+- **Docker**: the image declares `EXPOSE 8585` so Unraid and Portainer pre-fill the web UI port.
+
+[u]Server[/u]
+- **Watcher cleans up removed episodes**: the library watcher now clears detection data for episodes deleted from local disks, on top of picking up new ones. Network shares and Unraid user shares do not report changes to apps, so those rely on scheduled scanning.
+
+[u]Fixes[/u]
+- **Blank posters**: the top rows of posters could stay blank when the list restored your scroll position, until you clicked into a show and back. They load right away now.
+- **More room on phones**: the page itself scrolls now instead of an inner panel, so a mobile browser hides its toolbar as you scroll down. More screen for content, most noticeable in landscape.
+- **Mobile double-tap zoom**: a stray double tap on a control (a library header, a card) no longer zooms the page; pinch-zoom still works.
+- **Scroll behind dialogs**: opening a dialog no longer lets a scroll or swipe move the page underneath it, and your place is kept when you close.
+- **Security**: updated the bundled SQLite native library past a high-severity advisory (GHSA-2m69-gcr7-jv3q).
+
 [b]v1.0.0[/b]
 First stable release built around the web UI. The interface moved from the desktop window to your browser, so the same Skiptro runs on Windows, a NAS, or a Docker host and you reach it from any device on your network. Databases from 0.20.x migrate automatically, with a backup written first.
 
@@ -48,11 +79,6 @@ First stable release built around the web UI. The interface moved from the deskt
 
 [u]CLI[/u]
 - **`streams` lists mismatched episodes**: when a season has audio tracks on only some episodes, `streams` now lists which episode numbers carry the extra track and warns that a per-season stream override may break detection on the rest. Uniform seasons are unchanged (the count already says all episodes match). Requested by Hitcher.
-
-[b]v0.20.2[/b]
-
-[u]Detection[/u]
-- **2-episode seasons**: intros are now detected when a season has only two episodes. The cross-match previously required at least 3 episodes to agree, a 2-episode season would always result in "No skippable intro found". Adjusted to cap at season size instead of hardcode to 3. Reported by Hitcher for Rick and Morty S09.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"

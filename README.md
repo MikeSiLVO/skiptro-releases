@@ -175,6 +175,7 @@ Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 | `show exclude <id> <name>` | Exclude a show from scanning |
 | `show include <id> <name>` | Re-include an excluded show |
 | `lookup <file>` | Show detected segments for a file |
+| `cleanup` | Remove detections for files that no longer exist (deleted/moved episodes). `--dry-run` to preview |
 
 ### CLI Options
 
@@ -237,6 +238,9 @@ Media libraries listed in `MEDIA_PATHS` (comma-separated) are auto-registered on
 ```bash
 # Manual scan
 docker exec skiptro /app/skiptro scan --all --export
+
+# Remove detections for deleted/moved episodes
+docker exec skiptro /app/skiptro cleanup
 ```
 
 > Upgrading from a 0.x image: the old `SCAN_SCHEDULE` and `SCAN_ARGS` variables no longer do anything. Publish port 8585 to reach the web UI, and set up scheduled scans there.
