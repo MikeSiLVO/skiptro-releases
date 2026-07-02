@@ -230,6 +230,10 @@ services:
   skiptro:
     image: mikesilvo/skiptro:latest
     container_name: skiptro
+    labels:
+      # Unraid: show a Skiptro icon and a WebUI link in the Docker tab
+      - net.unraid.docker.icon=https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/unraid/skiptro-icon.png
+      - net.unraid.docker.webui=http://[IP]:[PORT:8585]/
     ports:
       - "8585:8585"
     environment:
