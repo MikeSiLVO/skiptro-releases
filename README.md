@@ -27,7 +27,7 @@ A show's detail, with each season's detected intro, timing, and export status:
 
 Works from your phone too:
 
-<img src="https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/screenshots/mobile-shows.jpg" width="320" alt="Skiptro on a phone">
+<img src="https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/screenshots/mobile.jpg" width="320" alt="Skiptro on a phone">
 
 ## Features
 
