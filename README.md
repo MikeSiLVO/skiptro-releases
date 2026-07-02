@@ -15,6 +15,20 @@ Skiptro uses audio fingerprinting and machine learning to detect TV show intros 
 
 You run Skiptro on your PC or NAS and manage it from a **web UI** in your browser. Each release also includes a **CLI** for automation and a **tray app** that runs the server in the background.
 
+## Screenshots
+
+The show grid, with each show's intro coverage at a glance:
+
+![Skiptro show grid](https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/screenshots/web-ui-shows.png)
+
+A show's detail, with each season's detected intro, timing, and export status:
+
+![Skiptro show detail](https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/screenshots/show-detail.png)
+
+Works from your phone too:
+
+<img src="https://raw.githubusercontent.com/MikeSiLVO/skiptro-releases/main/screenshots/mobile-shows.jpg" width="320" alt="Skiptro on a phone">
+
 ## Features
 
 - Browser-based UI to manage libraries, scan, match shows to TMDB, and review results
@@ -135,10 +149,10 @@ The `export-chapters` command writes `.skiptro.chapters` files in ffmpeg metadat
 These can be embedded into your video files to add chapter markers:
 
 ```bash
-# MKV files — edits in-place, no remux needed (requires mkvtoolnix)
+# MKV files, edits in-place, no remux needed (requires mkvtoolnix)
 mkvpropedit episode.mkv -c episode.skiptro.chapters
 
-# Any format — remuxes into a new file (no re-encoding)
+# Any format, remuxes into a new file (no re-encoding)
 ffmpeg -i episode.mkv -i episode.skiptro.chapters -map 0 -map_chapters 1 -codec copy output.mkv
 ```
 
@@ -147,12 +161,12 @@ ffmpeg -i episode.mkv -i episode.skiptro.chapters -map 0 -map_chapters 1 -codec 
 Set up a cron job or Windows Task Scheduler to keep your skip files updated:
 
 ```bash
-# Cron (Linux/macOS) — scan and export nightly at 3am
+# Cron (Linux/macOS), scan and export nightly at 3am
 0 3 * * * /path/to/skiptro scan --all --export
 ```
 
 ```
-# Windows Task Scheduler — run skiptro.exe scan --all --export
+# Windows Task Scheduler, run skiptro.exe scan --all --export
 ```
 
 ### CLI Commands
@@ -258,7 +272,7 @@ Add-MpPreference -ExclusionProcess "C:\path\to\Skiptro\ffmpeg\ffmpeg.exe"
 
 The web UI shows the exact command with the correct path under Settings > Performance.
 
-This only excludes file reads made by the bundled FFmpeg binary — your media files are still protected normally.
+This only excludes file reads made by the bundled FFmpeg binary, so your media files are still protected normally.
 
 ## Kodi Add-on
 
