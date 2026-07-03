@@ -20,6 +20,20 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.1.1[/b]
+
+[u]Web UI[/u]
+- **Sort by what needs scanning**: a new "Needs scanning" sort on the Shows page floats never-scanned shows to the top, then the stalest scans, so the work left to do is up front.
+- **Steady toolbar on phones**: the Scan and Validate buttons keep a fixed label instead of growing to include the selected library name, so filtering to a library no longer reflows the toolbar. The library picker already shows the scope, and the confirmation toast still names it. The picker also holds a fixed width now, so a short library name no longer shrinks the Grid/List toggle next to it.
+- **Cleaner season cards**: the export-format chips (JSON, Chapters, EDL, Themes) move to their own row instead of crowding the season buttons, an unexported season shows a muted "not exported" tag, and the expand arrow now matches the other dropdown chevrons. All four formats fit on one line on desktop and phones.
+- **Settings apply across devices**: toggles like the Support link and simple mode now update other open browsers and devices within a few seconds, with no refresh.
+
+[u]Matching[/u]
+- **Folders with extra tags now match**: the matcher reads the show name and year even when the folder carries quality, language, or bracket tags after them (like "Show (2020) [1080p]"), instead of sending the whole name to TMDB and finding nothing. A TMDB id in the folder ({tmdb-12345} or [tmdbid-12345]) is taken as a direct match.
+
+[u]Docker[/u]
+- **Unraid icon and WebUI link**: the image sets Unraid's icon and WebUI labels, so containers show a Skiptro icon and a WebUI shortcut in the Unraid Docker tab with no hand-added labels. The compose example in the README lists them too.
+
 [b]v1.1.0[/b]
 A reworked Shows toolbar, Custom dialog, and Stats page, smarter TMDB matching that clears most ambiguous shows on its own and now logs each run to Activity, plus mobile scrolling and safety fixes.
 
@@ -74,11 +88,6 @@ First stable release built around the web UI. The interface moved from the deskt
 [u]Fixes[/u]
 - **Scan resilience**: one unscannable show (an odd filename, a corrupt file, a probe failure) no longer aborts the whole library scan. It is logged and skipped and the scan continues. This affected the CLI and Docker as well. Reported by bobrap.
 - **Stale detections cleared on scan**: renaming, moving, or removing an episode could leave a stale detection behind, inflating the detected count and lingering in exports. A scan now reconciles against the current files, so it self-heals.
-
-[b]v0.20.3[/b]
-
-[u]CLI[/u]
-- **`streams` lists mismatched episodes**: when a season has audio tracks on only some episodes, `streams` now lists which episode numbers carry the extra track and warns that a per-season stream override may break detection on the rest. Uniform seasons are unchanged (the count already says all episodes match). Requested by Hitcher.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"
