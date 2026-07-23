@@ -33,6 +33,7 @@ Works from your phone too:
 
 - Browser-based UI to manage libraries, scan, match shows to TMDB, and review results
 - Detects intros by comparing audio across episodes in a season
+- Keeps skipping intros on new episodes even after you delete the earlier ones (opt-in intro signatures)
 - Exports `.skiptro.json` files for the companion Kodi add-on
 - EDL export for Kodi's built-in auto-skip
 - Theme audio export (MP3) for [tvtunes](https://github.com/latts9923/service.tvtunes) integration
@@ -96,50 +97,20 @@ From the web UI you can:
 
 To reach it from another device, turn on remote access in Settings and open `http://<server-ip>:8585`. There is no login by default; set an API key (Settings, or the `SKIPTRO_API_KEY` environment variable) to require one. For access from outside your LAN, use a VPN or an authenticated reverse proxy. A QR code in Settings fills the key in on a phone.
 
-## CLI Quick Start
+## Command Line
 
 The CLI is ideal for automation, scheduled tasks, and headless servers.
 
 ```bash
-# Scan a single season
+# Detect intros in one season
 skiptro scan "/path/to/TV Show/Season 1"
 
-# Force rescan (ignore cached results)
-skiptro scan "/path/to/TV Show/Season 1" --force
-
-# Scan all configured libraries
-skiptro scan --all
-
-# Scan all libraries and export skip files for Kodi
+# Register a library, then scan everything and export skip files for Kodi
+skiptro library add "/path/to/TV Shows"
 skiptro scan --all --export
 
-# Scan all and export both skip files and chapter files
-skiptro scan --all --export --chapters
-
-# Scan all and export EDL files for Kodi auto-skip
-skiptro scan --all --export --edl
-
-# Export .skiptro.json files from existing scan results
-skiptro export
-
-# Export ffmpeg chapter files (.skiptro.chapters)
-skiptro export-chapters
-
-# Export Kodi EDL files (.edl)
-skiptro export-edl
-
-# Export intro audio as MP3 for tvtunes (one per season in show folder)
-skiptro export-themes
-
-# Manage libraries
-skiptro library add "/path/to/TV Shows"
-skiptro libraries
-
-# Exclude a show from scanning
-skiptro show exclude 1 "Show Name"
-
-# Check what's been detected for a specific file
-skiptro lookup "/path/to/episode.mkv"
+# Also write chapter and EDL files alongside the skip files
+skiptro scan --all --export --chapters --edl
 ```
 
 ### Chapter Files
@@ -158,54 +129,58 @@ ffmpeg -i episode.mkv -i episode.skiptro.chapters -map 0 -map_chapters 1 -codec 
 
 ### Scheduled Scanning
 
-Set up a cron job or Windows Task Scheduler to keep your skip files updated:
+Schedule scans from the web UI under Settings, or run the CLI from cron (Linux/macOS) or Windows Task Scheduler:
 
 ```bash
-# Cron (Linux/macOS), scan and export nightly at 3am
+# Nightly at 3am
 0 3 * * * /path/to/skiptro scan --all --export
 ```
 
-```
-# Windows Task Scheduler, run skiptro.exe scan --all --export
-```
+### Commands
 
-### CLI Commands
+| Command | Options | Description |
+|---------|---------|-------------|
+| `scan <path>` | `--movie` `--force` `--dry-run` `--rescan-no-intro` `--audio-stream N` | Scan a directory and detect intros |
+| `scan --all` | `--export` `--chapters` `--edl` `--themes` `--force` `--dry-run` `--rescan-no-intro` | Scan every configured library |
+| `scan-files <files...>` | `--force` `--dry-run` `--diagnostics` `--audio-stream N` | Scan specific episode files (min 2) |
+| `status` | | Show scan statistics |
+| `libraries` | | List configured libraries |
+| `library add\|remove\|rename\|enable\|disable <...>` | | Manage libraries |
+| `show list\|exclude\|include <...>` | | List or exclude shows |
+| `streams [set\|clear] <...>` | `--all` | Show or override per-show audio track |
+| `lookup <file>` | | Show detected segments for a file |
+| `cleanup` | `--dry-run` `--force` | Remove detections for deleted or moved episodes |
+| `fingerprints [enable\|disable\|generate\|clear <id>\|--all\|prune]` | | Manage intro signatures (lists them when run bare) |
+| `export [path]` | | Export .skiptro.json files for Kodi |
+| `export-chapters [path]` | | Export ffmpeg chapter files |
+| `export-edl [path]` | | Export Kodi EDL files for auto-skip |
+| `export-themes [path]` | `--name <prefix>` `--overwrite` | Export intro audio as MP3 for tvtunes |
+| `serve` | `--port N` `--remote` `--local` | Start the web UI server |
 
-| Command | Description |
-|---------|-------------|
-| `scan <path>` | Scan a directory for TV episodes and detect intros |
-| `scan --all` | Scan all configured libraries |
-| `scan-files <files...>` | Scan specific episode files (min 2) |
-| `export [path]` | Export .skiptro.json files for Kodi |
-| `export-chapters [path]` | Export ffmpeg chapter files (.skiptro.chapters) |
-| `export-edl [path]` | Export Kodi EDL files for auto-skip (.edl) |
-| `export-themes [path]` | Export intro audio as MP3 for tvtunes |
-| `status` | Show scan statistics |
-| `libraries` | List configured media libraries |
-| `library add <path>` | Add a media library |
-| `library remove <id>` | Remove a library and its data |
-| `library enable/disable <id>` | Enable or disable a library |
-| `show list <id>` | List shows in a library |
-| `show exclude <id> <name>` | Exclude a show from scanning |
-| `show include <id> <name>` | Re-include an excluded show |
-| `lookup <file>` | Show detected segments for a file |
-| `cleanup` | Remove detections for files that no longer exist (deleted/moved episodes). `--dry-run` to preview |
+**Options:**
 
-### CLI Options
+- `--force` re-detect, ignoring cached results (with `cleanup`, also removes past the mass-deletion safety cap)
+- `--dry-run` detect without writing to the database (previews, for `cleanup`)
+- `--rescan-no-intro` re-check seasons marked as having no intro
+- `--audio-stream N` use audio track N (0-based) for multi-language files
+- `--movie` treat the path as a film, not a TV folder
+- `--export` `--chapters` `--edl` `--themes` after `scan --all`, also write skip files, chapters, EDL, or theme MP3s
+- `--diagnostics` write a JSON diagnostic report
+- `--name <prefix>` theme filename prefix (default: theme)
+- `--overwrite` overwrite existing theme files
+- `--all` with `streams`, include single-track seasons
+- `--port N` serve on a specific port
+- `--remote` / `--local` bind all interfaces / localhost only
 
-| Option | Description |
-|--------|-------------|
-| `--force` | Force rescan everything (ignore cached results) |
-| `--export` | Export after scan completes (use with `scan --all`) |
-| `--chapters` | Also export ffmpeg chapter files (use with `--export`) |
-| `--edl` | Also export Kodi EDL files (use with `--export`) |
-| `--themes` | Also export theme MP3s for tvtunes (use with `--export`) |
-| `--name <prefix>` | Theme filename prefix (default: `theme`) |
-| `--overwrite` | Overwrite existing theme files |
-| `--dry-run` | Scan without writing to database |
-| `--rescan-no-intro` | Rescan seasons previously marked as having no intro |
-| `--diagnostics` | Write a JSON diagnostic report to logs (use with `scan-files`) |
-| `--audio-stream N` | Select audio stream index (0-based) for multi-language files |
+## Intro signatures
+
+Detection needs at least 2 episodes in a season to compare. If you delete episodes after watching, a later season can end up with a lone episode and nothing to match it against.
+
+With intro signatures on, Skiptro stores a small audio fingerprint of each show's intro, so a new or lone episode still gets its intro matched after the earlier ones are gone. It is off by default.
+
+- Turn it on under Settings, or with `skiptro fingerprints enable`.
+- For an already-scanned library, build signatures from existing detections without re-scanning: the Generate action on the Stats page, or `skiptro fingerprints generate`.
+- Manage them on the Stats page (per show or in bulk) or with `skiptro fingerprints` (list, clear, prune).
 
 ## Docker
 
@@ -262,21 +237,6 @@ docker exec skiptro /app/skiptro cleanup
 ```
 
 > Upgrading from a 0.x image: the old `SCAN_SCHEDULE` and `SCAN_ARGS` variables no longer do anything. Publish port 8585 to reach the web UI, and set up scheduled scans there.
-
-## Windows Performance
-
-Windows Defender real-time protection can slow scans by **10-30x** by scanning every file read FFmpeg makes on large video files.
-
-To fix, run this once in PowerShell as admin:
-
-```powershell
-# Replace with your actual Skiptro install path
-Add-MpPreference -ExclusionProcess "C:\path\to\Skiptro\ffmpeg\ffmpeg.exe"
-```
-
-The web UI shows the exact command with the correct path under Settings > Performance.
-
-This only excludes file reads made by the bundled FFmpeg binary, so your media files are still protected normally.
 
 ## Kodi Add-on
 

@@ -20,6 +20,19 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.2.0[/b]
+Intro signatures keep skipping intros on shows you watch and delete, even when a season is down to a single episode, plus a few Shows page refinements.
+
+[u]Intro signatures[/u]
+- **Match a lone episode**: detection normally needs at least two episodes in a season to compare against each other. With intro signatures on, Skiptro stores a small audio fingerprint of each show's intro, so a new or leftover episode still gets its intro matched after the earlier ones are gone. Off by default; turn it on under Settings or with `skiptro fingerprints enable`.
+- **No re-scan to start**: for a library you have already scanned, the Generate action on the Stats page (or `skiptro fingerprints generate`) builds signatures from your existing detections, no re-scanning.
+- **Manage per show or in bulk**: the Stats page shows which shows have a signature and lets you generate, clear, or prune them, per show or all at once. `skiptro fingerprints` does the same from the command line (list, clear, prune).
+
+[u]Web UI[/u]
+- **Shows list keeps its place**: opening a show and going back keeps your sort order and scroll position instead of jumping to the top.
+- **Filter chips**: active filters on the Shows page show as chips, with quick "needs scanning" and "no intro" filters and a Clear filters link.
+- **Library rename in a dialog**: renaming a library opens a small dialog instead of editing inline.
+
 [b]v1.1.1[/b]
 
 [u]Web UI[/u]
@@ -64,30 +77,6 @@ A reworked Shows toolbar, Custom dialog, and Stats page, smarter TMDB matching t
 - **Mobile double-tap zoom**: a stray double tap on a control (a library header, a card) no longer zooms the page; pinch-zoom still works.
 - **Scroll behind dialogs**: opening a dialog no longer lets a scroll or swipe move the page underneath it, and your place is kept when you close.
 - **Security**: updated the bundled SQLite native library past a high-severity advisory (GHSA-2m69-gcr7-jv3q).
-
-[b]v1.0.0[/b]
-First stable release built around the web UI. The interface moved from the desktop window to your browser, so the same Skiptro runs on Windows, a NAS, or a Docker host and you reach it from any device on your network. Databases from 0.20.x migrate automatically, with a backup written first.
-
-[u]Web UI[/u]
-- **`skiptro serve`**: full interface at http://localhost:8585 - show grid with posters, library management with a folder browser, scan and export jobs with a live queue, stats, activity log, and settings.
-- **TMDB matching**: shows get proper titles and posters, with a manual picker for ambiguous matches. Fully optional - a Metadata toggle keeps Skiptro folder-based with a simple list view.
-- **Duplicate handling**: the same show in multiple libraries (1080p and 4K copies) merges into one entry with per-version seasons; detection and exports stay per-file.
-- **Remote access**: reach Skiptro from another device on your network. No login by default; set an API key (Settings or the `SKIPTRO_API_KEY` env var) to require one, and use a VPN or an authenticated reverse proxy for access from outside your LAN. A QR code in Settings fills the key in on a phone.
-- **Built for phones**: small-screen layout throughout - wide tables become one card per row, the job queue opens as a bottom sheet, and taps no longer zoom text fields.
-- **Quality of life**: A-Z jump rail, library and match-state filters that survive navigation, per-card scan indicator, queue flyout with external-scan detection, custom scan/export selection, scroll restore, and themed scrollbars.
-
-[u]Server[/u]
-- **In-app scheduler** replaces OS task schedulers and Docker cron.
-- **File watcher**: scans a library automatically after new episodes appear, debounced, with no disk activity while idle.
-- **Server controls**: restart and shut down from Settings.
-
-[u]Desktop and Docker[/u]
-- **Desktop is now a tray launcher**: the classic desktop pages are gone; the desktop app runs the server in the tray, opens the web UI, and can start with Windows.
-- **Docker serves the web UI by default**: the old `SCAN_SCHEDULE` and `SCAN_ARGS` variables are replaced by Settings and the in-app scheduler.
-
-[u]Fixes[/u]
-- **Scan resilience**: one unscannable show (an odd filename, a corrupt file, a probe failure) no longer aborts the whole library scan. It is logged and skipped and the scan continues. This affected the CLI and Docker as well. Reported by bobrap.
-- **Stale detections cleared on scan**: renaming, moving, or removing an episode could leave a stale detection behind, inflating the detected count and lingering in exports. A scan now reconciles against the current files, so it self-heals.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"
