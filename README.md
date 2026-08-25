@@ -84,7 +84,7 @@ Skiptro is managed from your browser.
 skiptro serve
 ```
 
-On Windows you can instead launch `Skiptro-Desktop.exe`, which runs the server in the tray and opens the web UI for you (with an option to start with Windows).
+On Windows you can instead launch `Skiptro-Desktop.exe`, which runs the server in the tray and opens the web UI for you. Right-click the tray icon for "Start with Windows" and to start or restart the server.
 
 From the web UI you can:
 
@@ -147,6 +147,7 @@ Schedule scans from the web UI under Settings, or run the CLI from cron (Linux/m
 | `libraries` | | List configured libraries |
 | `library add\|remove\|rename\|enable\|disable <...>` | | Manage libraries |
 | `show list\|exclude\|include <...>` | | List or exclude shows |
+| `show window <show-path> [seconds\|default]` | | Show, set, or clear one show's search window |
 | `streams [set\|clear] <...>` | `--all` | Show or override per-show audio track |
 | `lookup <file>` | | Show detected segments for a file |
 | `cleanup` | `--dry-run` `--force` | Remove detections for deleted or moved episodes |
@@ -171,6 +172,12 @@ Schedule scans from the web UI under Settings, or run the CLI from cron (Linux/m
 - `--all` with `streams`, include single-track seasons
 - `--port N` serve on a specific port
 - `--remote` / `--local` bind all interfaces / localhost only
+
+## Shows with a long cold open
+
+Detection looks at the first 15 minutes of each episode. A few shows open with a cold open long enough to push the title sequence past that, and those seasons come back with nothing found.
+
+On the show's page, use Search window to widen it to 20, 30, 45 or 60 minutes, or run `skiptro show window "/path/to/Show" 1800`. It applies to that show only, and every scan of it reads that much more audio per episode, so leave the rest of your library on the default.
 
 ## Intro signatures
 

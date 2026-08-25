@@ -20,6 +20,23 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.3.0[/b]
+Late intros are detected instead of discarded, new episodes in a scanned season are picked up on their own, and shows with a long cold open can widen how far detection looks.
+
+[u]Detection[/u]
+- **Late intros are kept**: an episode whose intro starts much later than the rest of its season is no longer discarded. Reported by bobrap.
+- **Recovery searches the whole window**: the last-resort match for a missed episode only looked where the other intros sat, so it could never find a late one.
+- **Search window per show**: widen detection to 20, 30, 45 or 60 minutes on the show's page, or with `skiptro show window <show-path> <seconds>`. For shows whose cold open pushes the title sequence past the first 15 minutes. Reported by Andy2244 (skiptro-releases#6).
+
+[u]Scanning[/u]
+- **New episodes in a scanned season**: a failed incremental scan no longer marks the season complete, so a later addition is picked up by the next scan. Reported by WegoW (skiptro-releases#7).
+- **Show and season scans report their tally**: they always summarised zero intros found.
+- **Scan progress reaches the log**: season progress and skips reach scan.log, not just the Activity page.
+
+[u]Desktop[/u]
+- **Uninstall cleans up**: removing Skiptro clears its "Start with Windows" entry and shortcuts.
+- **Start with Windows shows the real state**: the tray checkmark re-reads the registry, so an entry disabled in Task Manager no longer shows as on.
+
 [b]v1.2.0[/b]
 Intro signatures keep skipping intros on shows you watch and delete, even when a season is down to a single episode, plus a few Shows page refinements.
 
@@ -46,37 +63,6 @@ Intro signatures keep skipping intros on shows you watch and delete, even when a
 
 [u]Docker[/u]
 - **Unraid icon and WebUI link**: the image sets Unraid's icon and WebUI labels, so containers show a Skiptro icon and a WebUI shortcut in the Unraid Docker tab with no hand-added labels. The compose example in the README lists them too.
-
-[b]v1.1.0[/b]
-A reworked Shows toolbar, Custom dialog, and Stats page, smarter TMDB matching that clears most ambiguous shows on its own and now logs each run to Activity, plus mobile scrolling and safety fixes.
-
-[u]Web UI[/u]
-- **Toolbar redesign**: filter, a Grid/List toggle, sort-by (Title, Date added, Recently scanned), the library picker, and the Scan / Custom / Validate / Match actions sit in one consistent order. Phones fold it into two compact rows and the action buttons size to their labels.
-- **Custom scan/export redesign**: a Scan/Export mode toggle shows only the options that apply, and the show picker is a collapsible per-library tree with a tri-state checkbox (none, partial, all), a selected/total count, a filter, and All/Clear. The toggle and action button stay pinned while the tree scrolls. Larger touch targets on phones.
-- **Confirm whole-library actions**: Scan all, Validate exports, and Verify libraries ask first, since each crawls every library and wakes idle drives. A scoped single-library scan or export still runs immediately.
-- **Rename libraries**: rename a library inline on the Libraries page, or with `library rename <id> <name>` on the CLI. Display-only. The folder and detections are untouched.
-- **Unified jobs bar**: one bottom bar lists all running work (scans, queued exports, and matching together), each with a Cancel. It replaces the top-right Jobs button; Activity stays the full history.
-- **Stats page**: the summary tightens to a clean 2x2 of cards on phones (Intros found, Libraries, Avg confidence, Exported), and the filter gets its own row with a live "shows with scan data" count. A duplicate card was dropped.
-- **Support link**: a muted Ko-fi "Support" link with a small heart in the top bar, hideable from Settings.
-
-[u]Matching[/u]
-- **Fewer manual picks**: most shows that used to need one now match on their own. Matching checks name and year, then season and episode counts, then episode-title overlap, leaving only the genuinely unclear ones for you.
-- **Re-match unresolved**: re-runs matching over just the ambiguous and unmatched shows; whatever stays ambiguous opens in an auto-advancing review picker.
-- **Match runs in Activity**: a completed Match all or Re-match is recorded in the Activity history with its result counts (matched, ambiguous, unmatched).
-
-[u]CLI and Docker[/u]
-- **`cleanup` command**: removes detection records for episodes whose files are gone, without touching anything still on disk.
-- **Docker**: the image declares `EXPOSE 8585` so Unraid and Portainer pre-fill the web UI port.
-
-[u]Server[/u]
-- **Watcher cleans up removed episodes**: the library watcher now clears detection data for episodes deleted from local disks, on top of picking up new ones. Network shares and Unraid user shares do not report changes to apps, so those rely on scheduled scanning.
-
-[u]Fixes[/u]
-- **Blank posters**: the top rows of posters could stay blank when the list restored your scroll position, until you clicked into a show and back. They load right away now.
-- **More room on phones**: the page itself scrolls now instead of an inner panel, so a mobile browser hides its toolbar as you scroll down. More screen for content, most noticeable in landscape.
-- **Mobile double-tap zoom**: a stray double tap on a control (a library header, a card) no longer zooms the page; pinch-zoom still works.
-- **Scroll behind dialogs**: opening a dialog no longer lets a scroll or swipe move the page underneath it, and your place is kept when you close.
-- **Security**: updated the bundled SQLite native library past a high-severity advisory (GHSA-2m69-gcr7-jv3q).
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"
