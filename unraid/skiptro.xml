@@ -20,6 +20,11 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.3.1[/b]
+
+[u]CLI[/u]
+- **`show window` takes minutes**: it asked for seconds while the web UI offered minutes, so the same setting wanted a different unit depending on where you set it. `skiptro show window "/path/to/Show" 30` now means 30 minutes.
+
 [b]v1.3.0[/b]
 Late intros are detected instead of discarded, new episodes in a scanned season are picked up on their own, and shows with a long cold open can widen how far detection looks.
 
@@ -49,20 +54,6 @@ Intro signatures keep skipping intros on shows you watch and delete, even when a
 - **Shows list keeps its place**: opening a show and going back keeps your sort order and scroll position instead of jumping to the top.
 - **Filter chips**: active filters on the Shows page show as chips, with quick "needs scanning" and "no intro" filters and a Clear filters link.
 - **Library rename in a dialog**: renaming a library opens a small dialog instead of editing inline.
-
-[b]v1.1.1[/b]
-
-[u]Web UI[/u]
-- **Sort by what needs scanning**: a new "Needs scanning" sort on the Shows page floats never-scanned shows to the top, then the stalest scans, so the work left to do is up front.
-- **Steady toolbar on phones**: the Scan and Validate buttons keep a fixed label instead of growing to include the selected library name, so filtering to a library no longer reflows the toolbar. The library picker already shows the scope, and the confirmation toast still names it. The picker also holds a fixed width now, so a short library name no longer shrinks the Grid/List toggle next to it.
-- **Cleaner season cards**: the export-format chips (JSON, Chapters, EDL, Themes) move to their own row instead of crowding the season buttons, an unexported season shows a muted "not exported" tag, and the expand arrow now matches the other dropdown chevrons. All four formats fit on one line on desktop and phones.
-- **Settings apply across devices**: toggles like the Support link and simple mode now update other open browsers and devices within a few seconds, with no refresh.
-
-[u]Matching[/u]
-- **Folders with extra tags now match**: the matcher reads the show name and year even when the folder carries quality, language, or bracket tags after them (like "Show (2020) [1080p]"), instead of sending the whole name to TMDB and finding nothing. A TMDB id in the folder ({tmdb-12345} or [tmdbid-12345]) is taken as a direct match.
-
-[u]Docker[/u]
-- **Unraid icon and WebUI link**: the image sets Unraid's icon and WebUI labels, so containers show a Skiptro icon and a WebUI shortcut in the Unraid Docker tab with no hand-added labels. The compose example in the README lists them too.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"
