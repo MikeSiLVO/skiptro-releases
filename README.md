@@ -54,7 +54,7 @@ Works from your phone too:
 | macOS | x64 (Intel) | Yes |
 | macOS | ARM64 (Apple Silicon) | Yes |
 
-All releases include FFmpeg 8.0 bundled, no additional dependencies required.
+All releases include FFmpeg 9.0 bundled, no additional dependencies required.
 
 ## Installation
 
@@ -71,7 +71,7 @@ All releases include FFmpeg 8.0 bundled, no additional dependencies required.
 |------|-------------|
 | `skiptro` / `skiptro.exe` | The Skiptro app: runs the web UI (`skiptro serve`) and the CLI |
 | `Skiptro-Desktop` / `Skiptro-Desktop.exe` | Tray app that runs the server in the background and opens the web UI |
-| `ffmpeg/` | Bundled FFmpeg 8.0 |
+| `ffmpeg/` | Bundled FFmpeg 9.0 |
 | `intro_encoder.onnx` | ML model for intro verification |
 | `intro_encoder.onnx.data` | ML model weights data |
 

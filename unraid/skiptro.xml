@@ -20,6 +20,21 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.3.2[/b]
+
+[u]Detection[/u]
+- **Whole seasons with no intro found**: short partial matches could outnumber the real intro matches and hide the intro. Seen on The Big Bang Theory seasons 10-12. Reported by daveh077.
+
+[u]Web UI[/u]
+- **Season Rescan**: always rescans the season. It did nothing on a season where no intro was found.
+
+[u]CLI[/u]
+- **`--no-position` removed**: it had no effect.
+
+[u]Bundled[/u]
+- **FFmpeg 9.0.2** on every platform.
+- **FFmpeg license**: the notices state GPL version 3, and the full text ships in the ffmpeg folder.
+
 [b]v1.3.1[/b]
 
 [u]CLI[/u]
@@ -41,19 +56,6 @@ Late intros are detected instead of discarded, new episodes in a scanned season 
 [u]Desktop[/u]
 - **Uninstall cleans up**: removing Skiptro clears its "Start with Windows" entry and shortcuts.
 - **Start with Windows shows the real state**: the tray checkmark re-reads the registry, so an entry disabled in Task Manager no longer shows as on.
-
-[b]v1.2.0[/b]
-Intro signatures keep skipping intros on shows you watch and delete, even when a season is down to a single episode, plus a few Shows page refinements.
-
-[u]Intro signatures[/u]
-- **Match a lone episode**: detection normally needs at least two episodes in a season to compare against each other. With intro signatures on, Skiptro stores a small audio fingerprint of each show's intro, so a new or leftover episode still gets its intro matched after the earlier ones are gone. Off by default; turn it on under Settings or with `skiptro fingerprints enable`.
-- **No re-scan to start**: for a library you have already scanned, the Generate action on the Stats page (or `skiptro fingerprints generate`) builds signatures from your existing detections, no re-scanning.
-- **Manage per show or in bulk**: the Stats page shows which shows have a signature and lets you generate, clear, or prune them, per show or all at once. `skiptro fingerprints` does the same from the command line (list, clear, prune).
-
-[u]Web UI[/u]
-- **Shows list keeps its place**: opening a show and going back keeps your sort order and scroll position instead of jumping to the top.
-- **Filter chips**: active filters on the Shows page show as chips, with quick "needs scanning" and "no intro" filters and a Clear filters link.
-- **Library rename in a dialog**: renaming a library opens a small dialog instead of editing inline.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"
