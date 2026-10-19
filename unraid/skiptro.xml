@@ -20,6 +20,34 @@
   <Changes>
 [center][b]Skiptro Change Log[/b][/center]
 
+[b]v1.4.0[/b]
+More seasons find their intro, new shows are matched on TMDB after a scan, and a season with no intro says why.
+
+[u]Detection[/u]
+- **More seasons find their intro**: partial matches could still hide the real one. Seen on 12 Monkeys seasons 1 and 4. Reported by daveh077.
+- **Missed episodes found on more seasons**: seen on The Woman in the Wall. A Big Bang Theory retrospective special no longer gets a false intro.
+
+[u]Scanning[/u]
+- **Scan log**: Activity shows one line per season, with Show details for the full log. A season with no intro says why: too few or unreadable episodes, no shared opening, only a title card or logo, or rejected.
+- **Shows stuck on "needs scanning"**: a show whose seasons were already scanned clears on the next scan.
+- **Shows with fewer than 2 episodes** no longer count as needing a scan.
+
+[u]Web UI[/u]
+- **New shows are matched on TMDB after a scan, scheduled included.** Reported by Hitcher.
+- **Weekly scan schedule**: picking Weekly left the Frequency dropdown blank and was never saved. Reported by WegoW (skiptro-releases#8).
+- **Verify libraries**: episodes under a deleted show folder are removed when the library is still there.
+
+[u]CLI[/u]
+- **`--verbose`** prints the detection detail that always goes to scan.log.
+- **Same library with or without a trailing separator**: `scan F:\TV` and `scan F:\TV\` no longer create two libraries.
+- **`scan-files --diagnostics`** lists every match between episodes, per episode.
+
+[u]Bundled[/u]
+- **ASP.NET Core 10.0.13**: fixes two high severity security advisories in the web server.
+
+[u]Docs[/u]
+- **Output formats and REST API**: documented in the docs folder of the public repo.
+
 [b]v1.3.2[/b]
 
 [u]Detection[/u]
@@ -39,23 +67,6 @@
 
 [u]CLI[/u]
 - **`show window` takes minutes**: it asked for seconds while the web UI offered minutes, so the same setting wanted a different unit depending on where you set it. `skiptro show window "/path/to/Show" 30` now means 30 minutes.
-
-[b]v1.3.0[/b]
-Late intros are detected instead of discarded, new episodes in a scanned season are picked up on their own, and shows with a long cold open can widen how far detection looks.
-
-[u]Detection[/u]
-- **Late intros are kept**: an episode whose intro starts much later than the rest of its season is no longer discarded. Reported by bobrap.
-- **Recovery searches the whole window**: the last-resort match for a missed episode only looked where the other intros sat, so it could never find a late one.
-- **Search window per show**: widen detection to 20, 30, 45 or 60 minutes on the show's page, or with `skiptro show window <show-path> <seconds>`. For shows whose cold open pushes the title sequence past the first 15 minutes. Reported by Andy2244 (skiptro-releases#6).
-
-[u]Scanning[/u]
-- **New episodes in a scanned season**: a failed incremental scan no longer marks the season complete, so a later addition is picked up by the next scan. Reported by WegoW (skiptro-releases#7).
-- **Show and season scans report their tally**: they always summarised zero intros found.
-- **Scan progress reaches the log**: season progress and skips reach scan.log, not just the Activity page.
-
-[u]Desktop[/u]
-- **Uninstall cleans up**: removing Skiptro clears its "Start with Windows" entry and shortcuts.
-- **Start with Windows shows the real state**: the tray checkmark re-reads the registry, so an entry disabled in Task Manager no longer shows as on.
   </Changes>
 
   <Config Name="WebUI" Target="8585" Default="8585" Mode="tcp"

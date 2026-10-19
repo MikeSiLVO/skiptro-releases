@@ -38,6 +38,7 @@ Works from your phone too:
 - EDL export for Kodi's built-in auto-skip
 - Theme audio export (MP3) for [tvtunes](https://github.com/latts9923/service.tvtunes) integration
 - Optional ffmpeg chapter file export for users who prefer to embed chapters
+- File formats are described in [Output Formats](docs/output-formats.md)
 - Per-show exclusion for skipping specific shows
 - Remote access from a phone or another device, with an optional API key
 - Docker support for headless/NAS deployments
@@ -96,6 +97,8 @@ From the web UI you can:
 - Allow remote access and reach Skiptro from a phone or another device
 
 To reach it from another device, turn on remote access in Settings and open `http://<server-ip>:8585`. There is no login by default; set an API key (Settings, or the `SKIPTRO_API_KEY` environment variable) to require one. For access from outside your LAN, use a VPN or an authenticated reverse proxy. A QR code in Settings fills the key in on a phone.
+
+The same server has a JSON API for scripts and automation, described in [REST API](docs/api.md).
 
 ## Command Line
 
